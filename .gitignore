@@ -1,0 +1,39 @@
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Local configuration
+local.properties
+.gradle
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Android Studio navigation editor temp files
+.navigation/
+
+# Keystores
+*.jks
+*.keystore
+
+# External native build
+.externalNativeBuild/
+.cxx/
+
+# Logs
+*.log
+
+# Crashlytics
+fabric.properties
+app/google-services.json
+
+# APKs
+*.apk
+*.ap_\n
+# Others
+.DS_Store
+Thumbs.db
