@@ -21,11 +21,18 @@ Ce dépôt vise à construire une application mobile Android entièrement décen
 - **P2P** :
   - Prévoir une découverte sans serveur (scan local, échange de codes éphémères, mDNS selon faisabilité Android).
   - Supporter un mode offline-first ; la mise en file d’attente doit rester chiffrée et temporaire.
-- **Tests** : ajouter des tests unitaires pour la logique de chiffrement, l’expiration et les utilitaires réseau. Pour le code Android, privilégier des tests instrumentés ciblés.
-- **Observabilité** : logs minimaux et anonymisés. Pas de collecte d’analytics.
+- **Observabilité & qualité** :
+  - Ajouter des logs structurés et anonymisés au fur et à mesure du développement. Logguer les chemins d’exécution clés (création de session P2P, validation crypto, expiration des messages) sans jamais inclure de contenu utilisateur ni de secrets.
+  - Prévoir des hooks de debug (assertions, vérifications d’invariants, checks d’état) activables en build de développement et neutralisés en production.
+  - Intégrer des outils de détection d’erreurs dès que possible (lint, analyse statique, vérifications de threads, détection de fuites de ressources) et corriger les alertes bloquantes avant merge.
+  - Documenter pour chaque nouvelle fonctionnalité les points de log/monitoring ajoutés et comment les activer.
+- **Tests** :
+  - Ajouter des tests unitaires pour toute nouvelle logique (crypto, expiration, utilitaires réseau, parsers, etc.).
+  - Exécuter l’ensemble de la suite de tests à chaque modification significative avant commit/PR. Les changements ne sont acceptés que si tous les tests passent localement.
+  - Privilégier des doubles (fakes/mocks) pour isoler le réseau et la crypto en test ; ne jamais dépendre d’un service externe.
 
 ## Structure documentaire
-- Mettre à jour cette page si de nouvelles règles d’architecture ou de sécurité apparaissent.
+- Mettre à jour cette page si de nouvelles règles d’architecture, de qualité ou de sécurité apparaissent.
 - Les sous-dossiers peuvent ajouter leur propre `AGENTS.md` pour préciser des conventions locales (scope descendant dans l’arborescence).
 
 ## Checklist rapide avant merge
@@ -34,3 +41,5 @@ Ce dépôt vise à construire une application mobile Android entièrement décen
 - Expiration/auto-destruction testée et vérifiable.
 - Permissions Android revues et minimales.
 - Tests et CI adaptés (`./gradlew assembleDebug` au minimum) sans fuite de secrets.
+- Suite de tests unitaires complète exécutée et verte après chaque série de modifications.
+- Logs et assertions de debug présents pour les chemins critiques, sans données sensibles.
